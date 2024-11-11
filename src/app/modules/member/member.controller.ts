@@ -46,10 +46,12 @@ const getSingleMember = async (req: Request, res: Response) => {
   }
 };
 
-
 const updateMember = async (req: Request, res: Response) => {
   try {
-    const result = await MemberService.updateMemberIntoDB(req.params.memberId, req.body);
+    const result = await MemberService.updateMemberIntoDB(
+      req.params.memberId,
+      req.body
+    );
     res.send({
       success: true,
       statusCode: 200,
@@ -62,9 +64,25 @@ const updateMember = async (req: Request, res: Response) => {
   }
 };
 
+const deleteMember = async (req: Request, res: Response) => {
+  try {
+    const result = await MemberService.deleteMemberFromDB(req.params.memberId);
+    res.send({
+      success: true,
+      statusCode: 200,
+      message: "Member deleted successfully",
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).send({ message: "Member not found" });
+  }
+};
+
 export const MemberController = {
   createMember,
   getAllMembers,
   getSingleMember,
-  updateMember
+  updateMember,
+  deleteMember,
 };

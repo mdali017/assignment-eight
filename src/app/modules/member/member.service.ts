@@ -33,9 +33,17 @@ const updateMemberIntoDB = async (memberId: string, payload: any) => {
   return member;
 };
 
+const deleteMemberFromDB = async (memberId: string) => {
+  const member = await prisma.member.delete({
+    where: { memberId },
+  });
+  return member;
+};
+
 export const MemberService = {
   createMemberIntoDB,
   getAllMembersFromDB,
   getSingleMemberFromDB,
-  updateMemberIntoDB
+  updateMemberIntoDB,
+  deleteMemberFromDB,
 };
