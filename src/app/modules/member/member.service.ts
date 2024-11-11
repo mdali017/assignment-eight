@@ -11,7 +11,7 @@ const getAllMembersFromDB = async () => {
 };
 
 const getSingleMemberFromDB = async (memberId: string) => {
-//   console.log({memberId});
+  //   console.log({memberId});
   if (!memberId) {
     throw new Error("memberId is required");
   }
@@ -20,8 +20,16 @@ const getSingleMemberFromDB = async (memberId: string) => {
     where: { memberId },
   });
 
-//   console.log(member);
+  //   console.log(member);
 
+  return member;
+};
+
+const updateMemberIntoDB = async (memberId: string, payload: any) => {
+  const member = await prisma.member.update({
+    where: { memberId },
+    data: payload,
+  });
   return member;
 };
 
@@ -29,4 +37,5 @@ export const MemberService = {
   createMemberIntoDB,
   getAllMembersFromDB,
   getSingleMemberFromDB,
+  updateMemberIntoDB
 };
