@@ -14,22 +14,34 @@ datasource db {
 }
 
 model Book {
-  id              String   @id @default(uuid())
+  id              String         @id @default(uuid())
   title           String
   genre           String
   publishedYear   Int
   totalCopies     Int
   availableCopies Int
-  createAt        DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createAt        DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  BorrowRecord    BorrowRecord[]
 }
 
 model Member {
-  memberId       String   @id @default(uuid())
+  memberId       String         @id @default(uuid())
   name           String
-  email          String   @unique
+  email          String         @unique
   phone          String
   membershipDate DateTime
-  createAt       DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createAt       DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  BorrowRecord   BorrowRecord[]
+}
+
+model BorrowRecord {
+  borrowId   String    @id @default(uuid())
+  borrowDate DateTime  @default(now())
+  returnDate DateTime?
+  bookId     String
+  book       Book      @relation(fields: [bookId], references: [id])
+  memberId   String
+  member     Member    @relation(fields: [memberId], references: [memberId])
 }
