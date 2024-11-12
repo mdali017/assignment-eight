@@ -4,13 +4,13 @@
     {
       "src": "dist/server.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["prisma/**/*", "node_modules/.prisma/**/*"] }
+      "config": { "includeFiles": ["prisma/schema.prisma"] }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/server.ts"
+      "dest": "dist/server.js"
     }
   ]
 }

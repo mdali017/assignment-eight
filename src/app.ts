@@ -16,7 +16,11 @@ app.use("/api", MemberRoutes);
 app.use("/api", BorrowRecordRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Library Management System Server is running");
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Welcome to library management system",
+  });
 });
 
 app.use(globalErrorHandler);
