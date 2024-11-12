@@ -1,3 +1,4 @@
+// controller
 import { Request, Response } from "express";
 import { BorrowRecordService } from "./borrowRecord.service";
 
@@ -12,7 +13,33 @@ const createBorrowRecord = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(500).send({
+      success: false,
+      statusCode: 500,
+      message: "Failed to create borrow record",
+    });
   }
 };
 
-export const BorrowRecordController = { createBorrowRecord };
+// Return a Book
+const returnBook = async (req: Request, res: Response) => {
+  try {
+    const { borrowId } = req.body;
+    const result = await BorrowRecordService.returnBookIntoDB(borrowId);
+    res.send({
+      success: true,
+      status: 200,
+      message: "Book returned successfully",
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      success: false,
+      status: 500,
+      message: "Failed to return book",
+    });
+  }
+};
+
+export const BorrowRecordController = { createBorrowRecord, returnBook };
