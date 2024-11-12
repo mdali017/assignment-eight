@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { BookService } from "./book.service";
 
-const createBook = async (req: Request, res: Response) => {
+const createBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await BookService.createBookIntoDB(req.body);
     res.send({
@@ -11,11 +11,11 @@ const createBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
-const getAllBooks = async (req: Request, res: Response) => {
+const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await BookService.getAllBooksFromDB();
     res.send({
@@ -25,11 +25,15 @@ const getAllBooks = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
-const getSingleBook = async (req: Request, res: Response) => {
+const getSingleBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await BookService.getSingleBookFromDB(req.params.id);
     res.send({
@@ -39,12 +43,11 @@ const getSingleBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Book not found" });
+    next(err);
   }
 };
 
-const updateBook = async (req: Request, res: Response) => {
+const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await BookService.updateBookIntoDB(req.params.id, req.body);
     res.send({
@@ -54,12 +57,11 @@ const updateBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Book not found" });
+    next(err);
   }
 };
 
-const deleteBook = async (req: Request, res: Response) => {
+const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await BookService.deleteBookFromDB(req.params.id);
     res.send({
@@ -69,8 +71,7 @@ const deleteBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Book not found" });
+    next(err);
   }
 };
 

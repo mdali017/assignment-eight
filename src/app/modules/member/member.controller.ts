@@ -1,7 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { MemberService } from "./member.service";
 
-const createMember = async (req: Request, res: Response) => {
+const createMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await MemberService.createMemberIntoDB(req.body);
     res.send({
@@ -11,12 +15,15 @@ const createMember = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Not Member Created Successfully" });
+    next(err);
   }
 };
 
-const getAllMembers = async (req: Request, res: Response) => {
+const getAllMembers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await MemberService.getAllMembersFromDB();
     res.send({
@@ -26,12 +33,15 @@ const getAllMembers = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Members not found" });
+    next(err);
   }
 };
 
-const getSingleMember = async (req: Request, res: Response) => {
+const getSingleMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const memberId = req.params.memberId;
     const member = await MemberService.getSingleMemberFromDB(memberId);
@@ -42,11 +52,15 @@ const getSingleMember = async (req: Request, res: Response) => {
       data: member,
     });
   } catch (error) {
-    res.status(404).send({ message: "Member not found" });
+    next(error);
   }
 };
 
-const updateMember = async (req: Request, res: Response) => {
+const updateMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await MemberService.updateMemberIntoDB(
       req.params.memberId,
@@ -59,12 +73,15 @@ const updateMember = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Member not found" });
+    next(err);
   }
 };
 
-const deleteMember = async (req: Request, res: Response) => {
+const deleteMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await MemberService.deleteMemberFromDB(req.params.memberId);
     res.send({
@@ -74,8 +91,7 @@ const deleteMember = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
-    res.status(404).send({ message: "Member not found" });
+    next(err);
   }
 };
 
